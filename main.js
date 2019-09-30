@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import { MongoClient } from "mongodb";
 
 import user from "./routes/user";
+import { apiKeyValidation } from "./utils/auth";
 import { DB_NAME, DB_URL } from "./env";
 
 const PORT = process.env.PORT || 5000;
@@ -30,6 +31,9 @@ app.use((req, res, next) => {
   req.db = mongoClient.db(DB_NAME);
   next();
 });
+
+// This is the custom API Key Validation middleware
+app.use(apiKeyValidation);
 
 // Routing Middlewares
 app.use("/users", user);
